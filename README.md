@@ -1,12 +1,7 @@
-# Giya
+# Stellar
 
-An awesome REST boilerplate that uses Flask-RESTX (formerly Flask-RESTPlus).
-It has the usual API features to get you started and off the ground,
-it's also designed to be easily scalable and extendable.
-
-I wrote this boilerplate because I found that a lot of Flask REST boilerplates are either
-doing too much, is lacking, or it simply doesn't fit my needs.
-
+Projectify's backend written in Flask Python (3.8).
+Stellar is a free and open source REST API.
 
 # Features
 
