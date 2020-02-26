@@ -14,33 +14,6 @@ Stellar is a free and open source REST API.
 * Object serialization/deserialization with [Flask-Marshmallow](https://flask-marshmallow.readthedocs.io/en/latest/)
 * Data validations with Marshmallow [Marshmallow](https://marshmallow.readthedocs.io/en/stable/quickstart.html#validation)
 
-## Flask CLI help command output:
-```sh
-Usage: flask [OPTIONS] COMMAND [ARGS]...
-
-  A general utility script for Flask applications.
-
-  Provides commands from Flask, extensions, and the application. Loads the
-  application defined in the FLASK_APP environment variable, or from a
-  wsgi.py file. Setting the FLASK_ENV environment variable to 'development'
-  will enable debug mode.
-
-    $ export FLASK_APP=hello.py
-    $ export FLASK_ENV=development
-    $ flask run
-
-Options:
-  --version  Show the flask version
-  --help     Show this message and exit.
-
-Commands:
-  db      Perform database migrations.
-  routes  Show the routes for the app.
-  run     Run a development server.
-  shell   Run a shell in the app context.
-  test    Run unit tests
-```
-
 # Pre-requisites
 
 This boilerplate uses `SQLite` as its database, make sure you have it installed.
@@ -67,13 +40,14 @@ Please specify your app's environment variables in a `.env` file, otherwise Flas
 
 ```sh
 # .env file example
-export FLASK_APP=giya
+export FLASK_APP=stellar
+export FLASK_ENV=development
 
 # configs: production, testing, development, and default (uses DevelopmentConfig)
 export FLASK_CONFIG=development
 
 # Another way of assigning environment variables is:
-FLASK_APP=giya
+FLASK_APP=stellar
 FLASK_CONFIG=development
 
 # Read more at https://github.com/theskumar/python-dotenv
@@ -88,7 +62,7 @@ $ flask run
 ```
 
 ## Unit testing
-Giya has already some unit tests written, we encourage adding more unit tests as you scale.
+Stellar has already some unit tests written, we encourage adding more unit tests as you scale.
 
 ```sh
 # Unit testing
