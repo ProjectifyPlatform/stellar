@@ -62,7 +62,6 @@ class Role(Model):
             ],
         }
 
-        default_role = "User"
         for r in roles:
             role = Role.query.filter_by(name=r).first()
             if role is None:
