@@ -10,9 +10,13 @@ relationship = db.relationship
 class Permission:
     FOLLOW = 1
     COMMENT = 2
+    # Write something about a project
     WRITE = 4
-    MODERATE = 8
-    ADMIN = 16
+    # Create a project
+    CREATE = 8
+
+    MODERATE = 16
+    ADMIN = 32
 
 
 class Role(Model):
@@ -37,13 +41,19 @@ class Role(Model):
     def insert_roles():
         roles = {
             "User": [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
+            "Creator": [
+                Permission.FOLLOW,
+                Permission.COMMENT,
+                Permission.WRITE,
+                Permission.CREATE,
+            ],
             "Moderator": [
                 Permission.FOLLOW,
                 Permission.COMMENT,
                 Permission.WRITE,
                 Permission.MODERATE,
             ],
-            "Moderator": [
+            "Admin": [
                 Permission.FOLLOW,
                 Permission.COMMENT,
                 Permission.WRITE,
@@ -77,10 +87,14 @@ class User(Model):
     """ User model for storing user related data """
 
     id = Column(db.Integer, primary_key=True)
+    public_id = Column(db.String(15), unique=True, index=True)
     email = Column(db.String(64), unique=True, index=True)
     username = Column(db.String(15), unique=True, index=True)
     name = Column(db.String(64))
     password_hash = Column(db.String(128))
+
+    # Relationships
+    projects = relationship("Project", backref="author", lazy="dynamic")
 
     joined_date = Column(db.DateTime, default=datetime.utcnow)
     role_id = Column(db.Integer, db.ForeignKey("roles.id"))
