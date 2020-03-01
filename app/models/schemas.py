@@ -2,7 +2,7 @@
 from app import ma
 
 from .user import User
-from .content import Project, Rating, Post, Comment, Reply
+from .content import Project, Rating, Post, Comment
 
 
 class UserSchema(ma.ModelSchema):
