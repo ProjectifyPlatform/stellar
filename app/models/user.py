@@ -93,7 +93,12 @@ class User(Model):
     password_hash = Column(db.String(128))
 
     # Relationships
-    projects = relationship("Project", backref="author", lazy="dynamic")
+    ## Creations
+    projects = relationship("Project", backref="creator", lazy="dynamic")
+    ratings = relationship("Rating", backref="rater", lazy="dynamic")
+    ## Social
+    posts = relationship("Post", backref="author", lazy="dynamic")
+    comments = relationship("Comment", backref="author", lazy="dynamic")
 
     joined_date = Column(db.DateTime, default=datetime.utcnow)
     role_id = Column(db.Integer, db.ForeignKey("roles.id"))
