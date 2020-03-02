@@ -1,9 +1,5 @@
 def load_data(user_db_obj):
-    """ Load user's data
-
-    Parameters:
-    - User db object
-    """
+    """ Load user's data """
     from app.models.schemas import UserSchema
 
     user_schema = UserSchema()

@@ -20,4 +20,4 @@ class UserGet(Resource):
     @jwt_required
     def get(self, username):
         """ Get a specific user's data by their username """
-        return UserService.get_user_data(username)
+        return UserService.get_data(username)
