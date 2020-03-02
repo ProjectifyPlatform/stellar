@@ -25,5 +25,9 @@ class ProjectService:
             return internal_err_resp()
 
     @staticmethod
-    def create():
+    def create(data, current_user):
+        # Assign the vars
+
+        # Check if current_user is a creator.
+
         return
