@@ -1,3 +1,5 @@
+from app import db
+
 def load_data(project_db_obj):
     """ Load project's data """
     from app.models.schemas import ProjectSchema
@@ -8,6 +10,15 @@ def load_data(project_db_obj):
 
     return data
 
+def create_and_load(project_obj):
+    db.session.add(project_obj)
+    db.session.flush()
+
+    data = load_data(project_obj)
+
+    db.session.commit()
+
+    return data
 
 # Validations with Marshmallow
 from marshmallow import Schema, fields

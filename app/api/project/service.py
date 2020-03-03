@@ -1,10 +1,9 @@
 from flask import current_app
 
-from app import db
 from app.utils import err_resp, message, internal_err_resp
 from app.models.content import Project
 
-from .utils import load_data
+from .utils import load_data, create_and_load
 
 
 class ProjectService:
@@ -59,12 +58,7 @@ class ProjectService:
                 content=content,
             )
 
-            db.session.add(project)
-            db.session.flush()
-
-            project_data = load_data(project)
-
-            db.session.commit()
+            project_data = create_and_load(project)
 
             resp = message(True, "Project created.")
             resp["project"] = project_data
