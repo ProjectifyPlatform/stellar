@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from flask import current_app
 from app import db, bcrypt
 
 # Alias common DB names
@@ -51,21 +53,33 @@ class Role(Model):
                 Permission.FOLLOW,
                 Permission.COMMENT,
                 Permission.WRITE,
+                Permission.CREATE,
                 Permission.MODERATE,
             ],
             "Admin": [
                 Permission.FOLLOW,
                 Permission.COMMENT,
                 Permission.WRITE,
+                Permission.CREATE,
                 Permission.MODERATE,
                 Permission.ADMIN,
             ],
         }
 
+        default_role = "User"
         for r in roles:
             role = Role.query.filter_by(name=r).first()
             if role is None:
                 role = Role(name=r)
+
+            role.reset_permission()
+            for perm in roles[r]:
+                role.add_permission(perm)
+
+            role.default = role.name == default_role
+            db.session.add(role)
+
+        db.session.commit()
 
     def has_permission(self, perm):
         return self.permissions & perm == perm
@@ -105,6 +119,12 @@ class User(Model):
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
+        if self.role is None:
+            if self.email == current_app.config["STELLAR_ADMIN"]:
+                self.role = Role.query.filter_by(name="Administrator").first()
+
+            if self.role is None:
+                self.role = Role.query.filter_by(default=True).first()
 
     @property
     def password(self):
@@ -116,6 +136,9 @@ class User(Model):
 
     def verify_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)
+
+    def has_role(self, perm):
+        return self.role is not None and self.role.has_permission(perm)
 
     def __repr__(self):
         return f"<User {self.username}>"
