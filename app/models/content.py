@@ -15,8 +15,8 @@ class Project(Model):
     - Ratings
 
     Difficulties:
-    0 - Easy, 1 - Normal, 2 - Medium, 3 - Hard, 4 - Advanced.
-    If it isn't from 0 to 4, then it is Unspecified.
+    0 - Easy, 1 - Normal, 2 - Medium,
+    3 - Hard, 4 - Advanced, 5 - Unspecified.
     """
 
     id = Column(db.Integer, primary_key=True)
