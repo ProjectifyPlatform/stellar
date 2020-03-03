@@ -8,6 +8,7 @@ class Config:
     # Change the secret key in production run.
     SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(24))
     DEBUG = False
+    STELLAR_ADMIN = os.environ.get("STELLAR_ADMIN")
 
     # JWT Extended config
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", os.urandom(24))
