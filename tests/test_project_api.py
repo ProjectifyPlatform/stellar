@@ -70,9 +70,16 @@ class TestProjectBlueprint(BaseTestCase):
         create_resp_data = json.loads(create_resp.data.decode())
 
         project = create_resp_data["project"]
+
         self.assertTrue(create_resp.status)
         self.assertEqual(create_resp.status_code, 201)
 
         # Check if each field matches.
         for field in data:
             self.assertEqual(project[field], data[field])
+
+        # Test for bad request
+        data.pop("title")
+        bad_create_resp = create_project(self, access_token, data)
+
+        self.assertEqual(bad_create_resp.status_code, 400)
