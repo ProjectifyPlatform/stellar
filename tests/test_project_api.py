@@ -1,4 +1,5 @@
 import json
+from flask_jwt_extended import create_access_token
 
 from app import db
 from app.models.content import Project
@@ -14,8 +15,15 @@ def get_project_data(self, public_id):
 
 def create_project(self, access_token, data):
     return self.client.post(
-        f"/api/project/create",
+        "/api/project/create",
         data=json.dumps(data),
+        headers={"Authorization": f"Bearer {access_token}"},
+        content_type="application/json",
+    )
+
+def delete_project(self, access_token, public_id):
+    return self.client.delete(
+        f"/api/project/delete/{public_id}",
         headers={"Authorization": f"Bearer {access_token}"},
         content_type="application/json",
     )
@@ -54,7 +62,6 @@ class TestProjectBlueprint(BaseTestCase):
         )
 
         from app.models.user import User, Role
-        from flask_jwt_extended import create_access_token
 
         # Create a mock user
         Role.insert_roles()
@@ -83,3 +90,28 @@ class TestProjectBlueprint(BaseTestCase):
         bad_create_resp = create_project(self, access_token, data)
 
         self.assertEqual(bad_create_resp.status_code, 400)
+
+    def test_project_delete(self):
+        """ Test Project deletion """
+        # Create a mock user & project
+        from app.models.user import User
+
+        u = User(email="test@user.com", password="gentoo")
+
+        db.session.add(u)
+        db.session.commit()
+
+        p = Project(creator_id=u.id, public_id=123)
+
+        db.session.add(p)
+        db.session.commit()
+
+        access_token = create_access_token(identity=u.id)
+
+        delete_resp = delete_project(self, access_token, p.public_id)
+        self.assertTrue(delete_resp.status)
+        self.assertEqual(delete_resp.status_code, 200)
+
+        # Check if project is gone ;(
+        query_project = Project.query.filter_by(public_id=p.public_id).first()
+        self.assertIsNone(query_project)
