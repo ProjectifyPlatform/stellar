@@ -44,7 +44,7 @@ class PostSchema(ma.ModelSchema):
         model = Post
 
         # Fields to expose.
-        fields = ("public_id", "author_id", "caption", "project", "comments", "created")
+        fields = ("public_id", "caption", "project", "comments", "created")
 
 
 class CommentSchema(ma.ModelSchema):

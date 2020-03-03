@@ -5,7 +5,6 @@ from app.models.content import Project
 from app.models.user import Permission
 
 
-
 class ProjectService:
     @staticmethod
     def get_data(public_id):
@@ -15,6 +14,7 @@ class ProjectService:
 
         try:
             from .utils import load_data
+
             project_data = load_data(project)
 
             resp = message(True, "Project data sent")

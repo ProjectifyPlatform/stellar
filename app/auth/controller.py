@@ -21,7 +21,7 @@ class AuthLogin(Resource):
     User registers then receives the user's information and access_token
     """
 
-    auth_login = AuthDto.auth_login
+    _auth_login = AuthDto.auth_login
 
     @api.doc(
         "Auth login",
@@ -32,7 +32,7 @@ class AuthLogin(Resource):
             404: "Email does not match any account.",
         },
     )
-    @api.expect(auth_login, validate=True)
+    @api.expect(_auth_login, validate=True)
     def post(self):
         """ Login using email and password """
         # Grab the json data

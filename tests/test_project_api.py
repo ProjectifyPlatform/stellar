@@ -21,6 +21,7 @@ def create_project(self, access_token, data):
         content_type="application/json",
     )
 
+
 def delete_project(self, access_token, public_id):
     return self.client.delete(
         f"/api/project/delete/{public_id}",

@@ -22,11 +22,13 @@ def create_and_load(project_obj):
 
     return data
 
+
 def delete_project(project_db_obj):
     db.session.delete(project_db_obj)
     db.session.commit()
 
     return True
+
 
 # Validations with Marshmallow
 from marshmallow import Schema, fields
