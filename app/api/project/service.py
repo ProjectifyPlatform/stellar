@@ -27,6 +27,14 @@ class ProjectService:
     @staticmethod
     def create(data, current_user):
         # Assign the vars
+        title = data["title"]
+        difficulty = data["difficulty"]
+        time_required = data["time_required"]
+
+        abstract = data["abstract"]
+        objective = data["objective"]
+        safety = data.get("safety")
+        content = data["content"]
 
         # Check if current_user is a creator.
 
