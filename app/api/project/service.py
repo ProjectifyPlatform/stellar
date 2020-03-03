@@ -1,7 +1,10 @@
 from flask import current_app
 
+from app import db
 from app.utils import err_resp, message, internal_err_resp
 from app.models.content import Project
+
+from .utils import load_data
 
 
 class ProjectService:
@@ -10,8 +13,6 @@ class ProjectService:
         """ Get Project data by its public id """
         if not (project := Project.query.filter_by(public_id=public_id).first()):
             return err_resp("Project not found!", "project_404", 404)
-
-        from .utils import load_data
 
         try:
             project_data = load_data(project)
@@ -37,5 +38,38 @@ class ProjectService:
         content = data["content"]
 
         # Check if current_user is a creator.
+        from app.models.user import Permission
 
-        return
+        if not current_user.has_role(Permission.CREATE):
+            return err_resp("User is not a creator.", "user_not_creator", 403)
+
+        # Create a new project
+        from uuid import uuid4
+
+        try:
+            project = Project(
+                public_id=str(uuid4().int)[:15],
+                creator_id=current_user.id,
+                title=title,
+                difficulty=difficulty,
+                time_required=time_required,
+                abstract=abstract,
+                objective=objective,
+                safety=safety,
+                content=content,
+            )
+
+            db.session.add(project)
+            db.session.flush()
+
+            project_data = load_data(project)
+
+            db.session.commit()
+
+            resp = message(True, "Project created.")
+            resp["project"] = project_data
+            return resp, 201
+
+        except Exception as error:
+            current_app.logger.error(error)
+            return internal_err_resp
