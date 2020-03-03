@@ -13,14 +13,18 @@ from ..user.utils import get_user
 
 api = ProjectDto.api
 
-create_schema = CreateSchema()
+_project_success = ProjectDto.project_success
+_create_schema = CreateSchema()
 
 
 @api.route("/get/<string:public_id>")
 class ProjectGet(Resource):
     @api.doc(
         "Get a specific project",
-        responses={200: "Project data successfully sent", 404: "Project not found!",},
+        responses={
+            200: ("Project data successfully sent", _project_success),
+            404: "Project not found!",
+        },
     )
     def get(self, public_id):
         """ Get a specific project's data by its public id """
@@ -29,20 +33,24 @@ class ProjectGet(Resource):
 
 @api.route("/create")
 class ProjectCreate(Resource):
+
+    _project_create = ProjectDto.project_create
+
     @api.doc(
         "Create a new project",
         responses={
-            201: "Project data successfully created.",
+            201: ("Project data successfully created.", _project_success),
             403: "User is not a creator.",
         },
     )
+    @api.expect(_project_create, validate=True)
     @jwt_required
     def post(self):
         data = request.get_json()
         current_user = get_user(get_jwt_identity())
 
         # Validate data
-        if (errors := create_schema.validate(data)) :
+        if (errors := _create_schema.validate(data)) :
             return validation_error(False, errors), 400
 
         return ProjectService.create(data, current_user)
