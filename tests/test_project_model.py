@@ -6,14 +6,17 @@ from tests.utils.base import BaseTestCase
 
 
 class TestProjectModel(BaseTestCase):
-    def test_public_id_are_random(self):
+    def test_public_ids_are_random(self):
+        """ Check if project public IDs are random """
         p = Project(public_id=str(uuid4().int)[:15])
         p2 = Project(public_id=str(uuid4().int)[:15])
 
         self.assertNotEquals(p, p2)
 
     def test_schema(self):
-        p = Project(content="lorem")
+        """ Check Project Schema output """
+        content = "lorem"
+        p = Project(content=content)
         p_dump = ProjectSchema().dump(p)
 
-        self.assertEquals(p_dump["content"], "lorem")
+        self.assertEquals(p_dump["content"], content)

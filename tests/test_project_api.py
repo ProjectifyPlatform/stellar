@@ -15,7 +15,7 @@ def get_project_data(self, public_id):
 class TestProjectBlueprint(BaseTestCase):
     def test_project_get(self):
         """ Test getting a project from DB """
-        data = dict(content="Brogramming",public_id=123)
+        data = dict(content="Brogramming", public_id=123)
         project = Project(content=data["content"], public_id=data["public_id"])
 
         db.session.add(project)
