@@ -21,7 +21,7 @@ class ProjectGet(Resource):
         return ProjectService.get_data(public_id)
 
 
-@api.route("/")
+@api.route("/create")
 class ProjectCreate(Resource):
     @api.doc(
         "Create a new project",

@@ -14,7 +14,7 @@ def get_project_data(self, public_id):
 
 def create_project(self, access_token, data):
     return self.client.post(
-        f"/api/project/",
+        f"/api/project/create",
         data=json.dumps(data),
         headers={"Authorization": f"Bearer {access_token}"},
         content_type="application/json",
