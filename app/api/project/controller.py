@@ -47,15 +47,15 @@ class ProjectCreate(Resource):
 
         return ProjectService.create(data, current_user)
 
+
 @api.route("/delete/<string:public_id>")
 class ProjectDelete(Resource):
     @api.doc(
         "Delete a project.",
-        responses={
-            200: "Project has been deleted.",
-            401: "Insufficient permissions.",
-        }
+        responses={200: "Project has been deleted.", 401: "Insufficient permissions.",},
     )
     @jwt_required
     def delete(self, public_id):
-        return
+        """ Delete a specific project from the DB using its public id """
+        current_user = get_user(get_jwt_identity())
+        return ProjectService.delete(public_id, current_user)
