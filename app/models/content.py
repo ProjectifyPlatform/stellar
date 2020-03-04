@@ -26,6 +26,7 @@ class Project(Model):
     title = Column(db.String(255))
     difficulty = Column(db.Integer)
     time_required = Column(db.String(20))
+    image_hash = Column(db.String(40))
 
     # Text values.
     abstract = Column(db.Text)
@@ -69,6 +70,7 @@ class Post(Model):
     public_id = Column(db.String(15))
     author_id = Column(db.Integer, db.ForeignKey("user.id"))
     caption = Column(db.Text)
+    image_hash = Column(db.String(40))
 
     # Relationships
     project = Column(db.String(15))
