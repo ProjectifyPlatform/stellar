@@ -6,6 +6,21 @@ Column = db.Column
 Model = db.Model
 relationship = db.relationship
 
+categories_projects = db.Table(
+    "categories_projects",
+    Column("project_id", db.Integer, db.ForeignKey("project.id")),
+    Column("category_id", db.Integer, db.ForeignKey("category.id")),
+)
+
+
+class Category(db.Model):
+    id = Column(db.Integer, primary_key=True)
+    name = Column(db.String(64), unique=True)
+    description = Column(db.String(512))
+
+    def __repr__(self):
+        return f"<Cateogory {self.name}>"
+
 
 class Project(Model):
     """
@@ -36,6 +51,16 @@ class Project(Model):
 
     created = Column(db.DateTime, default=datetime.utcnow)
 
+    # Relationships
+    ratings = relationship("Rating", backref="project", lazy="dynamic")
+    posts = relationship("Post", backref="project", lazy="dynamic")
+    categories = relationship(
+        "Category",
+        secondary=categories_projects,
+        backref=db.backref("projects"),
+        lazy=True,
+    )
+
     def __repr__(self):
         return f"<Project '{self.public_id}'>"
 
@@ -46,7 +71,10 @@ class Rating(Model):
     """
 
     id = Column(db.Integer, primary_key=True)
+    # The user that created this rating.
     rater_id = Column(db.Integer, db.ForeignKey("user.id"))
+    on_project = Column(db.Integer, db.ForeignKey("project.id"))
+    # Whole numbers only (0 - 5)
     rating = Column(db.Integer)
     feedback = Column(db.Text)
 
@@ -73,8 +101,11 @@ class Post(Model):
     image_hash = Column(db.String(40))
 
     # Relationships
-    project = Column(db.String(15))
+    on_project = Column(db.Integer, db.ForeignKey("project.id"))
     comments = relationship("Comment", backref="post", lazy="dynamic")
+    likes = relationship(
+        "PostLike", backref="post", cascade="all, delete-orphan", lazy="dynamic"
+    )
 
     created = Column(db.DateTime, index=True, default=datetime.utcnow)
 
@@ -96,4 +127,33 @@ class Comment(Model):
     on_post = Column(db.Integer, db.ForeignKey("post.id"))
 
     body = Column(db.Text)
+    likes = relationship("CommentLike", backref="comment", lazy="dynamic")
+
     created = Column(db.DateTime, default=datetime.utcnow)
+
+
+# Likes
+class PostLike(Model):
+    """ PostLike Model for storing post like related details """
+
+    # Details
+    id = Column(db.Integer, primary_key=True)
+    on_post = Column(db.Integer, db.ForeignKey("post.id"))
+    owner_id = Column(db.Integer, db.ForeignKey("user.id"))
+    liked_on = Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"<PostLike '{self.id}'>"
+
+
+class CommentLike(Model):
+    """ CommentLike Model for storing comment like related details """
+
+    # Details
+    id = Column(db.Integer, primary_key=True)
+    on_comment = Column(db.Integer, db.ForeignKey("comment.id"))
+    owner_id = Column(db.Integer, db.ForeignKey("user.id"))
+    liked_on = Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"<CommentLike '{self.id}'>"
