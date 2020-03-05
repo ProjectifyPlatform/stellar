@@ -60,7 +60,7 @@ class ProjectCreate(Resource):
 class ProjectDelete(Resource):
     @api.doc(
         "Delete a project.",
-        responses={200: "Project has been deleted.", 401: "Insufficient permissions.",},
+        responses={200: "Project has been deleted.", 401: "Insufficient permissions."},
     )
     @jwt_required
     def delete(self, public_id):
