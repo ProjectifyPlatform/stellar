@@ -2,6 +2,7 @@ from flask import current_app
 
 from app.utils import err_resp, message, internal_err_resp
 from app.models.content import Post
+from app.models.user import Permission
 
 
 class PostService:
@@ -19,6 +20,36 @@ class PostService:
             resp = message(True, "Post data succcessfully sent.")
             resp["post"] = post_data
             return resp, 200
+
+        except Exception as error:
+            current_app.logger.error(error)
+            return internal_err_resp()
+
+    @staticmethod
+    def create(data, current_user):
+        # Assign the vars
+        caption = data["caption"]
+        image_hash = data.get("image_hash")
+        project = data["project"]
+
+        # Create a new post
+        try:
+            from uuid import uuid4
+            from .utils import create_and_load
+
+            post = Post(
+                public_id=str(uuid4().int)[:15],
+                author_id=current_user.id,
+                caption=caption,
+                image_hash=image_hash,
+                project=project,
+            )
+
+            post_data = create_and_load(post)
+
+            resp = message(True, "Post created.")
+            resp["post"] = post_data
+            return resp, 201
 
         except Exception as error:
             current_app.logger.error(error)
