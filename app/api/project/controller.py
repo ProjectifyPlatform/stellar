@@ -7,20 +7,19 @@ from app.utils import validation_error
 # Project modules
 from .service import ProjectService
 from .dto import ProjectDto
-from .utils import CreateSchema
+from .utils import CreateProject
 
 from ..user.utils import get_user
 
 api = ProjectDto.api
 
 _project_success = ProjectDto.project_success
-_create_schema = CreateSchema()
+_create_validator = CreateProject()
 
 
 @api.route("/get/<string:public_id>")
 class ProjectGet(Resource):
     @api.doc(
-        "Get a specific project",
         responses={
             200: ("Project data successfully sent", _project_success),
             404: "Project not found!",
@@ -34,10 +33,10 @@ class ProjectGet(Resource):
 @api.route("/create")
 class ProjectCreate(Resource):
 
+    # Create new project.
     _project_create = ProjectDto.project_create
 
     @api.doc(
-        "Create a new project",
         responses={
             201: ("Project data successfully created.", _project_success),
             403: "User is not a creator.",
@@ -46,11 +45,12 @@ class ProjectCreate(Resource):
     @api.expect(_project_create, validate=True)
     @jwt_required
     def post(self):
+        """ Create a new project. """
         data = request.get_json()
         current_user = get_user(get_jwt_identity())
 
         # Validate data
-        if (errors := _create_schema.validate(data)) :
+        if (errors := _create_validator.validate(data)) :
             return validation_error(False, errors), 400
 
         return ProjectService.create(data, current_user)
@@ -59,7 +59,6 @@ class ProjectCreate(Resource):
 @api.route("/delete/<string:public_id>")
 class ProjectDelete(Resource):
     @api.doc(
-        "Delete a project.",
         responses={200: "Project has been deleted.", 401: "Insufficient permissions."},
     )
     @jwt_required
