@@ -73,6 +73,7 @@ class ProjectService:
         if not (project := Project.query.filter_by(public_id=public_id).first()):
             return err_resp("Project not found.", "project_404", 404)
 
+        # Check if the current user is the owner/admin/moderator.
         if (
             project.creator.public_id == current_user.public_id
             or current_user.has_role(Permission.MODERATE)
