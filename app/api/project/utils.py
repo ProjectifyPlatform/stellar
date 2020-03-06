@@ -35,7 +35,7 @@ from marshmallow import Schema, fields
 from marshmallow.validate import Length, Regexp, Range
 
 
-class CreateSchema(Schema):
+class CreateProject(Schema):
     """ /project/create [POST]
 
     Parameters:
