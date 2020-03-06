@@ -1,7 +1,7 @@
 from flask import current_app
 
 from app.utils import err_resp, message, internal_err_resp
-from app.models.content import Post
+from app.models.content import Post, Project
 from app.models.user import Permission
 
 
@@ -26,11 +26,16 @@ class PostService:
             return internal_err_resp()
 
     @staticmethod
-    def create(data, current_user):
+    def create(data, project_public_id, current_user):
         # Assign the vars
         caption = data["caption"]
         image_hash = data.get("image_hash")
-        project = data["project"]
+
+        # Check if the project exists
+        if not (
+            project := Project.query.filter_by(public_id=project_public_id).first()
+        ):
+            return err_resp("Can't create post without project.", "project_404", 404)
 
         # Create a new post
         try:
@@ -42,7 +47,7 @@ class PostService:
                 author_id=current_user.id,
                 caption=caption,
                 image_hash=image_hash,
-                project=project,
+                on_project=project.id,
             )
 
             post_data = create_and_load(post)
