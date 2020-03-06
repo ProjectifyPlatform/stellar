@@ -14,3 +14,7 @@ class PostDto:
             "comments": fields.Nested,
         },
     )
+
+    create_post = api.model(
+        "Create post data", {"caption": fields.String, "image_hash": fields.String,},
+    )
