@@ -1,5 +1,9 @@
 from flask_restx import Namespace, fields
 
+from ..project.dto import ProjectDto
+
+project_obj = ProjectDto.project_obj
+
 
 class UserDto:
 
@@ -7,9 +11,11 @@ class UserDto:
     user = api.model(
         "User object",
         {
+            "public_id": fields.String,
             "email": fields.String,
-            "name": fields.String,
             "username": fields.String,
+            "name": fields.String,
+            "projects": fields.List(fields.Nested(project_obj)),
             "joined_date": fields.DateTime,
             "role_id": fields.Integer,
         },
