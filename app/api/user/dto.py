@@ -29,3 +29,7 @@ class UserDto:
             "user": fields.Nested(user),
         },
     )
+
+    update_user = api.model(
+        "Update user object", {"username": fields.String, "bio": fields.String,},
+    )
