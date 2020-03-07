@@ -23,3 +23,27 @@ class UserService:
         except Exception as error:
             current_app.logger.error(error)
             return internal_err_resp()
+
+    @staticmethod
+    def update_data(data, user):
+
+        if not data:
+            return message(True, "Nothing to update."), 204
+
+        try:
+            from app import db
+
+            if (username := data.get("username")) :
+                user.username = username
+
+            if (bio := data.get("bio")) :
+                user.bio = bio
+
+            # Commit changes to db.
+            db.session.commit()
+
+            return message(True, "User data updated."), 200
+
+        except Exception as error:
+            current_app.logger.error(error)
+            return internal_err_resp()
