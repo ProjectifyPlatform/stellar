@@ -32,7 +32,13 @@ class UserGet(Resource):
 
 @api.route("/update")
 class UserUpdate(Resource):
-    @api.doc(responses={200: "User has been updated.",},)
+    @api.doc(
+        responses={
+            200: "User has been updated.",
+            204: "No data provided, nothing to do.",
+            400: "Validations failed",
+        },
+    )
     @api.expect(_update_model, validate=True)
     @jwt_required
     def put(self):

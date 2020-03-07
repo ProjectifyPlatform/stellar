@@ -11,9 +11,9 @@ class UserService:
         if not (user := User.query.filter_by(username=username).first()):
             return err_resp("User not found!", "user_404", 404)
 
-        from .utils import load_data
-
         try:
+            from .utils import load_data
+
             user_data = load_data(user)
 
             resp = message(True, "User data sent")

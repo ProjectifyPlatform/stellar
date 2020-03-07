@@ -10,7 +10,7 @@ class UserSchema(ma.ModelSchema):
         model = User
 
         # Fields to expose.
-        fields = ("email", "name", "username", "joined_date", "role_id")
+        fields = ("email", "name", "username", "bio", "joined_date", "role", "posts")
 
 
 class ProjectSchema(ma.ModelSchema):
