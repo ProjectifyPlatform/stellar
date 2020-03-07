@@ -13,7 +13,10 @@ from ..user.utils import get_user
 
 api = ProjectDto.api
 
+# Define models/validators.
 _project_success = ProjectDto.project_success
+_create_model = ProjectDto.project_create
+
 _create_validator = CreateProject()
 
 
@@ -32,17 +35,13 @@ class ProjectGet(Resource):
 
 @api.route("/create")
 class ProjectCreate(Resource):
-
-    # Create new project.
-    _project_create = ProjectDto.project_create
-
     @api.doc(
         responses={
             201: ("Project data successfully created.", _project_success),
             403: "User is not a creator.",
         },
     )
-    @api.expect(_project_create, validate=True)
+    @api.expect(_create_model, validate=True)
     @jwt_required
     def post(self):
         """ Create a new project. """

@@ -103,16 +103,17 @@ class User(Model):
     public_id = Column(db.String(15), unique=True, index=True)
     email = Column(db.String(64), unique=True, index=True)
     username = Column(db.String(15), unique=True, index=True)
+    bio = Column(db.String(150))
     name = Column(db.String(64))
     password_hash = Column(db.String(128))
 
     # Relationships
     ## Creations
     projects = relationship("Project", backref="creator", lazy="dynamic")
-    ratings = relationship("Rating", backref="rater", lazy="dynamic")
+    ratings = relationship("Rating", backref="rater", lazy=True)
     ## Social
     posts = relationship("Post", backref="author", lazy="dynamic")
-    comments = relationship("Comment", backref="author", lazy="dynamic")
+    comments = relationship("Comment", backref="author", lazy=True)
 
     joined_date = Column(db.DateTime, default=datetime.utcnow)
     role_id = Column(db.Integer, db.ForeignKey("roles.id"))
