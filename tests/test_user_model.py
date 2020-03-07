@@ -31,6 +31,7 @@ class TestUserModel(BaseTestCase):
         self.assertTrue(u.has_role(Permission.FOLLOW))
         self.assertTrue(u.has_role(Permission.COMMENT))
         self.assertTrue(u.has_role(Permission.WRITE))
+
         self.assertFalse(u.has_role(Permission.MODERATE))
         self.assertFalse(u.has_role(Permission.CREATE))
         self.assertFalse(u.has_role(Permission.ADMIN))
@@ -43,6 +44,7 @@ class TestUserModel(BaseTestCase):
         self.assertTrue(u.has_role(Permission.COMMENT))
         self.assertTrue(u.has_role(Permission.WRITE))
         self.assertTrue(u.has_role(Permission.CREATE))
+
         self.assertFalse(u.has_role(Permission.MODERATE))
         self.assertFalse(u.has_role(Permission.ADMIN))
 
@@ -55,6 +57,7 @@ class TestUserModel(BaseTestCase):
         self.assertTrue(u.has_role(Permission.WRITE))
         self.assertTrue(u.has_role(Permission.CREATE))
         self.assertTrue(u.has_role(Permission.MODERATE))
+
         self.assertFalse(u.has_role(Permission.ADMIN))
 
     def test_administrator_role(self):

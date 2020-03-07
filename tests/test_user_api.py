@@ -17,6 +17,15 @@ def get_user_data(self, access_token, username):
     )
 
 
+def update_user(self, access_token, data):
+    return self.client.put(
+        "/api/user/update",
+        data=json.dumps(data),
+        headers={"Authorization": f"Bearer {access_token}"},
+        content_type="application/json",
+    )
+
+
 class TestUserBlueprint(BaseTestCase):
     def test_user_get(self):
         """ Test getting a user from DB """
@@ -28,7 +37,7 @@ class TestUserBlueprint(BaseTestCase):
         db.session.add(user)
         db.session.commit()
 
-        access_token = create_access_token(identity=user.id)
+        access_token = create_access_token(user.id)
 
         user_resp = get_user_data(self, access_token, username)
         user_data = json.loads(user_resp.data.decode())
@@ -40,3 +49,28 @@ class TestUserBlueprint(BaseTestCase):
         # Test a 404 request
         user_404_resp = get_user_data(self, access_token, "non.existent")
         self.assertEquals(user_404_resp.status_code, 404)
+
+    def test_user_update(self):
+        """ Test updating user record """
+
+        # Create user
+        orig_data = dict(username="test.User", bio="skaterrr",)
+        user = User(username=orig_data["username"], bio=orig_data["bio"])
+
+        db.session.add(user)
+        db.session.commit()
+
+        access_token = create_access_token(user.id)
+
+        # Update
+        updated_data = dict(username="gen.too", bio="linux",)
+        update_resp = update_user(self, access_token, updated_data)
+
+        # Compare changes
+        updated_user = User.query.get(user.id)
+
+        self.assertTrue(update_resp)
+        self.assertEqual(update_resp.status_code, 200)
+
+        self.assertNotEqual(updated_user.username, orig_data["username"])
+        self.assertNotEqual(updated_user.bio, orig_data["bio"])
