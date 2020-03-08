@@ -5,6 +5,10 @@ from app.models.content import Project
 from app.models.user import Permission
 
 
+# Allowed update keys
+allowed = ("content", "abstract")
+
+
 class ProjectService:
     @staticmethod
     def get_data(public_id):
@@ -24,6 +28,35 @@ class ProjectService:
         except Exception as error:
             current_app.logger.error(error)
             return internal_err_resp()
+
+    @staticmethod
+    def update_data(data, public_id, current_user):
+        """ Update a Project """
+        if not data:
+            return message(True, "Nothing to update."), 204
+
+        if not (project := Project.query.filter_by(public_id=public_id).first()):
+            return err_resp("Project not found!", "project_404", 404)
+
+        # Check if the current user is the creator.
+        if project.creator.public_id == current_user.public_id:
+            try:
+                from app import db
+
+                for key, value in data.items():
+                    # Make sure that the key is allowed to be updated.
+                    if key in allowed:
+                        setattr(project, key, value)
+
+                db.session.commit()
+
+                return message(True, "Post data updated."), 200
+
+            except Exception as error:
+                current_app.logger.error(error)
+                return internal_err_resp()
+
+        return err_resp("User is not the creator.", "user_unauthorized", 401)
 
     @staticmethod
     def create(data, current_user):
