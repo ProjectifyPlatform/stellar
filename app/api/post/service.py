@@ -59,3 +59,52 @@ class PostService:
         except Exception as error:
             current_app.logger.error(error)
             return internal_err_resp()
+
+    @staticmethod
+    def delete(public_id, current_user):
+        if not (post := Post.query.filter_by(public_id=public_id).first()):
+            return err_resp("Post not found.", "project_404", 404)
+
+        # Check if the current user is the owner/admin/moderator.
+        if (
+            post.author.public_id == current_user.public_id
+            or current_user.has_role(Permission.MODERATE)
+            or current_user.has_role(Permission.ADMIN)
+        ):
+            try:
+                from .utils import delete_post
+
+                delete_post(post)
+
+                resp = message(True, "Post deleted.")
+                return resp, 200
+
+            except Exception as error:
+                current_app.logger.error(error)
+                return internal_err_resp()
+
+        return err_resp("Insufficient permissions!", "user_unauthorized", 401)
+
+    @staticmethod
+    def update(data, public_id, current_user):
+        if not (post := Post.query.filter_by(public_id).first()):
+            return err_resp("Post not found.", "post_404", 404)
+
+        # Check if the current user is the owner.
+        if post.author.public_id == current_user.public_id:
+            try:
+                from app import db
+
+                if (caption := data.get("caption")) :
+                    post.caption = caption
+
+                # Commit changes to db.
+                db.session.commit()
+
+                return message(True, "Post data updated"), 200
+
+            except Exception as error:
+                current_app.logger.error(error)
+                return internal_err_resp()
+
+        return err_resp("Insufficient permissions!", "user_unauthorized", 401)
