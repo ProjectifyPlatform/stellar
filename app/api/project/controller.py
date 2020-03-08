@@ -15,7 +15,6 @@ api = ProjectDto.api
 
 # Define models/validators.
 _project_success = ProjectDto.project_success
-_create_model = ProjectDto.project_create
 
 _create_validator = CreateProject()
 
@@ -35,6 +34,9 @@ class ProjectGet(Resource):
 
 @api.route("/create")
 class ProjectCreate(Resource):
+
+    _create_model = ProjectDto.project_create
+
     @api.doc(
         responses={
             201: ("Project data successfully created.", _project_success),
