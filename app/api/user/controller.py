@@ -11,9 +11,6 @@ from .utils import UserUpdate, get_user
 api = UserDto.api
 data_resp = UserDto.data_resp
 
-# Define models/validators
-_update_model = UserDto.update_user
-
 _update_validator = UserUpdate()
 
 
@@ -32,11 +29,14 @@ class UserGet(Resource):
 
 @api.route("/update")
 class UserUpdate(Resource):
+
+    _update_model = UserDto.update_user
+
     @api.doc(
         responses={
             200: "User has been updated.",
             204: "No data provided, nothing to do.",
-            400: "Validations failed",
+            400: "Validations failed.",
         },
     )
     @api.expect(_update_model, validate=True)
