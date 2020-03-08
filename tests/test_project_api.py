@@ -43,12 +43,12 @@ class TestProjectBlueprint(BaseTestCase):
         project_data = json.loads(project_resp.data.decode())
 
         self.assertTrue(project_resp.status)
-        self.assertEquals(project_resp.status_code, 200)
-        self.assertEquals(project_data["project"]["content"], data["content"])
+        self.assertEqual(project_resp.status_code, 200)
+        self.assertEqual(project_data["project"]["content"], data["content"])
 
         # Test a 404 request
         project_404_resp = get_project_data(self, 69)
-        self.assertEquals(project_404_resp.status_code, 404)
+        self.assertEqual(project_404_resp.status_code, 404)
 
     def test_project_create(self):
         """ Test project creation """
