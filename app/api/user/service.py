@@ -33,11 +33,8 @@ class UserService:
         try:
             from app import db
 
-            if (username := data.get("username")) :
-                user.username = username
-
-            if (bio := data.get("bio")) :
-                user.bio = bio
+            for key, value in data.items():
+                setattr(user, key, value)
 
             # Commit changes to db.
             db.session.commit()
