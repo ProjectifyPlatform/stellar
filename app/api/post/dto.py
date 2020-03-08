@@ -18,3 +18,7 @@ class PostDto:
     create_post = api.model(
         "Create post data", {"caption": fields.String, "image_hash": fields.String,},
     )
+
+    update_post = api.model(
+        "Update post data", {"caption": fields.String(required=True)},
+    )
