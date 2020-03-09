@@ -126,7 +126,7 @@ class TestPostBlueprint(BaseTestCase):
         access_token = create_access_token(u.id)
 
         # Update
-        updated_data = dict(caption="install", image_hash="gentoo.png")
+        updated_data = dict(caption="gentoo")
         update_resp = update_post(
             self, access_token, orig_data["public_id"], updated_data
         )
@@ -138,7 +138,6 @@ class TestPostBlueprint(BaseTestCase):
         self.assertEqual(update_resp.status_code, 200)
 
         self.assertNotEqual(updated_post.caption, orig_data["caption"])
-        self.assertNotEqual(updated_post.image_hash, orig_data["image_hash"])
 
     def test_post_deletion(self):
         """ Test post deletion """
