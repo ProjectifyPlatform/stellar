@@ -8,9 +8,7 @@ from tests.utils.base import BaseTestCase
 
 
 def get_post_data(self, public_id):
-    return self.client.get(
-        f"/api/post/get/{public_id}", content_type="application/json"
-    )
+    return self.client.get(f"/api/post/{public_id}", content_type="application/json")
 
 
 def create_post(self, access_token, project_public_id, data):
@@ -24,7 +22,7 @@ def create_post(self, access_token, project_public_id, data):
 
 def update_post(self, access_token, public_id, data):
     return self.client.put(
-        f"/api/post/update/{public_id}",
+        f"/api/post/{public_id}",
         data=json.dumps(data),
         headers={"Authorization": f"Bearer {access_token}"},
         content_type="application/json",
@@ -33,7 +31,7 @@ def update_post(self, access_token, public_id, data):
 
 def delete_post(self, access_token, public_id):
     return self.client.delete(
-        f"/api/post/delete/{public_id}",
+        f"/api/post/{public_id}",
         headers={"Authorization": f"Bearer {access_token}"},
         content_type="application/json",
     )

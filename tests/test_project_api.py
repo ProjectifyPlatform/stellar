@@ -9,7 +9,7 @@ from tests.utils.base import BaseTestCase
 
 def get_project_data(self, public_id):
     return self.client.get(
-        f"/api/project/get/{public_id}", content_type="application/json",
+        f"/api/project/{public_id}", content_type="application/json",
     )
 
 
@@ -24,7 +24,7 @@ def create_project(self, access_token, data):
 
 def delete_project(self, access_token, public_id):
     return self.client.delete(
-        f"/api/project/delete/{public_id}",
+        f"/api/project/{public_id}",
         headers={"Authorization": f"Bearer {access_token}"},
         content_type="application/json",
     )
