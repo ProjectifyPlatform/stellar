@@ -43,5 +43,15 @@ class CreatePost(Schema):
     - Image Hash (Str)
     """
 
-    caption = fields.Str(required=True, validate=[Length(min=1, max=3000)])
+    caption = fields.Str(required=True, validate=[Length(min=1, max=2200)])
     image_hash = fields.Str(validate=[Length(min=30)])
+
+
+class UpdatePost(Schema):
+    """ /api/post/<string:public_id>
+
+    Parameters:
+    - Caption (Str)
+    """
+
+    caption = fields.Str(required=True, validate=[Length(min=1, max=2200)])
