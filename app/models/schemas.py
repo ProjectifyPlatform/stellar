@@ -13,6 +13,14 @@ class UserSchema(ma.ModelSchema):
         fields = ("email", "name", "username", "bio", "joined_date", "role", "posts")
 
 
+class AuthorSchema(ma.ModelSchema):
+    class Meta:
+        model = User
+
+        # fields to expose.
+        fields = ("email", "name", "username", "bio", "role")
+
+
 class ProjectSchema(ma.ModelSchema):
     class Meta:
         model = Project
@@ -44,7 +52,14 @@ class PostSchema(ma.ModelSchema):
         model = Post
 
         # Fields to expose.
-        fields = ("public_id", "caption", "project", "comments", "created")
+        fields = (
+            "public_id",
+            "caption",
+            "project",
+            "comments",
+            "created",
+            "image_hash",
+        )
 
 
 class CommentSchema(ma.ModelSchema):
