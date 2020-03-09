@@ -87,7 +87,7 @@ class PostService:
 
     @staticmethod
     def update(data, public_id, current_user):
-        if not (post := Post.query.filter_by(public_id).first()):
+        if not (post := Post.query.filter_by(public_id=public_id).first()):
             return err_resp("Post not found.", "post_404", 404)
 
         # Check if the current user is the owner.
