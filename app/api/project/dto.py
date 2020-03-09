@@ -20,7 +20,7 @@ class ProjectDto:
         },
     )
 
-    project_success = api.model(
+    success_response = api.model(
         "Project success response",
         {
             "success": fields.Boolean,
@@ -40,5 +40,17 @@ class ProjectDto:
             "objective": fields.String(required=True),
             "safety": fields.String,
             "content": fields.String(required=True),
+        },
+    )
+
+    update_model = api.model(
+        "Project update model",
+        {
+            "title": fields.String,
+            "abstract": fields.String,
+            "objective": fields.String,
+            "content": fields.String,
+            "safety": fields.String,
+            "content": fields.String,
         },
     )
