@@ -55,7 +55,25 @@ class CreateProject(Schema):
     time_required = fields.Str(required=True, validate=[Length(max=20)])
 
     # Text values.
-    abstract = fields.Str(required=True)
-    objective = fields.Str(required=True)
-    safety = fields.Str()
-    content = fields.Str(required=True)
+    abstract = fields.Str(required=True, validate=[Length(max=500)])
+    objective = fields.Str(required=True, validate=[Length(max=500)])
+    safety = fields.Str(required=True, validate=[Length(max=500)])
+    content = fields.Str(required=True, validate=[Length(max=10000)])
+
+
+class UpdateProject(Schema):
+    """ /project/<string:public_id> [PUT]
+
+    Parameters:
+    - Title
+    - Abstract
+    - Content
+    - Safety
+    """
+
+    title = fields.Str(validate=[Length(min=2, max=128)])
+
+    abstract = fields.Str(validate=[Length(max=500)])
+    objective = fields.Str(validate=[Length(max=500)])
+    safety = fields.Str(validate=[Length(max=500)])
+    content = fields.Str(validate=[Length(max=10000)])
