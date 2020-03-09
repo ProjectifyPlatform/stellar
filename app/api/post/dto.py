@@ -11,7 +11,16 @@ class PostDto:
             "public_id": fields.String,
             "caption": fields.String,
             "image_hash": fields.String,
-            "comments": fields.Nested,
+            # Add more fields.
+        },
+    )
+
+    success_response = api.model(
+        "Post success response",
+        {
+            "status": fields.Boolean,
+            "message": fields.String,
+            "post": fields.Nested(post_obj),
         },
     )
 
