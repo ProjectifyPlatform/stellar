@@ -74,7 +74,10 @@ class PostCreate(Resource):
     _create_model = PostDto.create_post
 
     @api.doc(
-        responses={201: ("Post created.", _success_response), 404: "Can't create post without project.",}
+        responses={
+            201: ("Post created.", _success_response),
+            404: "Can't create post without project.",
+        }
     )
     @api.expect(_create_model, validate=True)
     @jwt_required
