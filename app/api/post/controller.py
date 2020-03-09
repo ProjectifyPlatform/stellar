@@ -40,7 +40,7 @@ class PostCreate(Resource):
         current_user = get_user(get_jwt_identity())
 
         # Validate data
-        if not (errors := _create_validator.validate(data)):
+        if (errors := _create_validator.validate(data)) :
             return validation_error(False, errors), 400
 
         return PostService.create(data, project_public_id, current_user)
