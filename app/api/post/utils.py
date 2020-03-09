@@ -32,7 +32,7 @@ def delete_post(post_db_obj):
 
 # Validations with Marshmallow
 from marshmallow import Schema, fields
-from marshmallow.validate import Range
+from marshmallow.validate import Length
 
 
 class CreatePost(Schema):
@@ -43,5 +43,5 @@ class CreatePost(Schema):
     - Image Hash (Str)
     """
 
-    caption = fields.Str(required=True, validate=[Range(min=1, max=3000)])
-    image_hash = fields.Str(validate=[Range(min=40)])
+    caption = fields.Str(required=True, validate=[Length(min=1, max=3000)])
+    image_hash = fields.Str(validate=[Length(min=30)])
