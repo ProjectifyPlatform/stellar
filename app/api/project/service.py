@@ -6,7 +6,7 @@ from app.models.user import Permission
 
 
 # Allowed update keys
-allowed = ("content", "abstract")
+allowed = ("abstract", "content", "safety", "content")
 
 
 class ProjectService:
