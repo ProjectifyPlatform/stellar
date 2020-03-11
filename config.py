@@ -15,6 +15,10 @@ class Config:
     ## Set the token to expire every week
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=7)
 
+    # Amount of stuff to load.
+    POSTS_PER_PAGE = 15
+    PROJECTS_PER_PAGE = 15
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
