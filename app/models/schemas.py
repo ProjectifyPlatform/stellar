@@ -36,6 +36,7 @@ class ProjectSchema(ma.ModelSchema):
             "safety",
             "content",
             "created",
+            "category",
         )
 
 
