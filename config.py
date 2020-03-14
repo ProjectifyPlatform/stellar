@@ -38,6 +38,10 @@ class TestingConfig(Config):
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # Reduce amount of items per page
+    POSTS_PER_PAGE = 3
+    PROJECTS_PER_PAGE = 3
+
 
 class ProductionConfig(Config):
     DEBUG = False
