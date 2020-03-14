@@ -1,5 +1,6 @@
 from flask import request
 from flask_restx import Resource
+from flask_jwt_extended import jwt_required
 
 # Project modules
 from .service import FeedService
@@ -17,6 +18,7 @@ class FeedPosts(Resource):
     @api.doc(
         responses={200: ("Post data successfully sent.", _projects_success_response),}
     )
+    @jwt_required
     def get(self):
         page = request.args.get("page", 1, type=int)
         return FeedService.get_posts(page)
