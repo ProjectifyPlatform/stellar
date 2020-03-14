@@ -1,5 +1,6 @@
 # Commonly used test case functions.
 import json
+from faker import Faker
 
 
 def register_user(self, data):
@@ -14,3 +15,6 @@ def login_user(self, email, password):
         data=json.dumps(dict(email=email, password=password,)),
         content_type="application/json",
     )
+
+# Create a fake profile.
+profile = Faker().profile()

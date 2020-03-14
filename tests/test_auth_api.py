@@ -1,7 +1,8 @@
 import json
+from faker import Faker
 
 from tests.utils.base import BaseTestCase
-from tests.utils.common import register_user, login_user
+from tests.utils.common import register_user, login_user, profile
 
 
 class TestAuthBlueprint(BaseTestCase):
@@ -9,10 +10,10 @@ class TestAuthBlueprint(BaseTestCase):
         """ Test Auth API registration and login """
         # Test registration
         data = dict(
-            email="test@user.com",
-            username="test.User",
-            name="Test User",
-            password="test1234",
+            email=profile["mail"],
+            username=profile["username"],
+            name=profile["name"],
+            password=profile["ssn"],
         )
 
         register_resp = register_user(self, data)

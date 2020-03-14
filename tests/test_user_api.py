@@ -6,7 +6,7 @@ from app import db
 from app.models.user import User
 
 from tests.utils.base import BaseTestCase
-from tests.utils.common import register_user, login_user
+from tests.utils.common import register_user, login_user, profile
 
 
 def get_user_data(self, access_token, username):
@@ -31,7 +31,7 @@ class TestUserBlueprint(BaseTestCase):
         """ Test getting a user from DB """
 
         # Create a mock user
-        username = "test1234"
+        username = profile["username"]
         user = User(username=username)
 
         db.session.add(user)
@@ -54,7 +54,7 @@ class TestUserBlueprint(BaseTestCase):
         """ Test updating user record """
 
         # Create user
-        orig_data = dict(username="test.User", bio="skaterrr",)
+        orig_data = dict(username=profile["username"], bio=profile["job"],)
         user = User(username=orig_data["username"], bio=orig_data["bio"])
 
         db.session.add(user)
