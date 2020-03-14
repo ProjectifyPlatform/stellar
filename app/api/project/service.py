@@ -1,7 +1,7 @@
 from flask import current_app
 
 from app.utils import err_resp, message, internal_err_resp
-from app.models.content import Project
+from app.models.content import Project, Category
 from app.models.user import Permission
 
 
@@ -70,6 +70,8 @@ class ProjectService:
         safety = data.get("safety")
         content = data["content"]
 
+        category_id = data["category_id"]
+
         # Check if current_user is a creator.
         if not current_user.has_role(Permission.CREATE):
             return err_resp("User is not a creator.", "user_not_creator", 403)
@@ -89,6 +91,7 @@ class ProjectService:
                 objective=objective,
                 safety=safety,
                 content=content,
+                category_id=category_id,
             )
 
             project_data = create_and_load(project)
