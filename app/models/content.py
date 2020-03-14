@@ -6,20 +6,15 @@ Column = db.Column
 Model = db.Model
 relationship = db.relationship
 
-categories_projects = db.Table(
-    "categories_projects",
-    Column("project_id", db.Integer, db.ForeignKey("project.id")),
-    Column("category_id", db.Integer, db.ForeignKey("category.id")),
-)
-
 
 class Category(db.Model):
     id = Column(db.Integer, primary_key=True)
     name = Column(db.String(64), unique=True)
     description = Column(db.String(512))
+    projects = relationship("Project", backref="category", lazy="dynamic")
 
     def __repr__(self):
-        return f"<Cateogory {self.name}>"
+        return f"<Category {self.name}>"
 
 
 class Project(Model):
@@ -54,12 +49,7 @@ class Project(Model):
     # Relationships
     ratings = relationship("Rating", backref="project", lazy="dynamic")
     posts = relationship("Post", backref="project", lazy="dynamic")
-    categories = relationship(
-        "Category",
-        secondary=categories_projects,
-        backref=db.backref("projects"),
-        lazy=True,
-    )
+    category_id = Column(db.Integer, db.ForeignKey("category.id"))
 
     def __repr__(self):
         return f"<Project '{self.public_id}'>"
