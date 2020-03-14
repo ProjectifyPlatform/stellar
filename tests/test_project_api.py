@@ -60,6 +60,7 @@ class TestProjectBlueprint(BaseTestCase):
             objective="The objective is to create something.",
             safety="No safety hazards",
             content="Start with the project, finish in 5 mins.",
+            category_id=1,
         )
 
         from app.models.user import User, Role
@@ -81,6 +82,9 @@ class TestProjectBlueprint(BaseTestCase):
 
         self.assertTrue(create_resp.status)
         self.assertEqual(create_resp.status_code, 201)
+
+        # Remove category id
+        data.pop("category_id")
 
         # Check if each field matches.
         for field in data:
