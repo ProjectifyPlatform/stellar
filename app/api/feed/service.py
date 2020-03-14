@@ -1,5 +1,5 @@
 from flask import current_app
-from app.utils import message
+from app.utils import message, internal_err_resp
 
 from app.models.content import Post, Project, Category
 from .utils import load_page_data
@@ -26,6 +26,7 @@ class FeedService:
 
         except Exception as error:
             current_app.logger.error(error)
+            return internal_err_resp()
 
     @staticmethod
     def get_projects(page: int, category_name: str):
@@ -54,3 +55,4 @@ class FeedService:
 
         except Exception as error:
             current_app.logger.error(error)
+            return internal_err_resp()
