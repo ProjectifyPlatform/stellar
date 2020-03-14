@@ -16,5 +16,6 @@ def login_user(self, email, password):
         content_type="application/json",
     )
 
+
 # Create a fake profile.
 profile = Faker().profile()
