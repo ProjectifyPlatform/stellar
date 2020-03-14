@@ -16,6 +16,7 @@ class ProjectDto:
             "objective": fields.String,
             "safety": fields.String,
             "content": fields.String,
+            "category": fields.Integer,
             "created": fields.DateTime,
         },
     )
@@ -35,6 +36,7 @@ class ProjectDto:
             "title": fields.String(required=True),
             "difficulty": fields.Integer(required=True),
             "time_required": fields.String(required=True),
+            "category_id": fields.Integer(required=True),
             # Text values.
             "abstract": fields.String(required=True),
             "objective": fields.String(required=True),
