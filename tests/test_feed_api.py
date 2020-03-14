@@ -2,6 +2,7 @@ import json
 from faker import Faker
 
 from app import db
+from flask_jwt_extended import create_access_token
 
 from tests.utils.base import BaseTestCase
 from tests.utils.common import profile
@@ -9,8 +10,11 @@ from tests.utils.common import profile
 fake = Faker()
 
 
-def get_feed_posts(self, page: int):
-    return self.client.get(f"/api/feed/posts?page={page}")
+def get_feed_posts(self, access_token, page: int):
+    return self.client.get(
+        f"/api/feed/posts?page={page}",
+        headers={"Authorization": f"Bearer {access_token}"},
+    )
 
 
 def get_feed_projects(self, page: int, category: str):
@@ -22,6 +26,8 @@ class TestFeedBlueprint(BaseTestCase):
         """ Test getting posts from feed. """
         from app.models.content import Post
 
+        access_token = create_access_token(69)
+
         # Create 6 random posts
         posts = []
 
@@ -32,7 +38,7 @@ class TestFeedBlueprint(BaseTestCase):
         db.session.bulk_save_objects(posts)
         db.session.commit()
 
-        feed_resp = get_feed_posts(self, 1)
+        feed_resp = get_feed_posts(self, access_token, 1)
         feed_resp_data = json.loads(feed_resp.data.decode())
 
         self.assertTrue(feed_resp.status)
@@ -40,7 +46,7 @@ class TestFeedBlueprint(BaseTestCase):
         self.assertEqual(len(feed_resp_data["posts"]), 3)
 
         # Page 2
-        feed_resp_2 = get_feed_posts(self, 2)
+        feed_resp_2 = get_feed_posts(self, access_token, 2)
         feed_resp_2_data = json.loads(feed_resp_2.data.decode())
 
         self.assertTrue(feed_resp_2.status)

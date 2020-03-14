@@ -32,6 +32,9 @@ class FeedService:
         from .utils import load_projects_data
 
         # Get projects from database.
+        if not category_name:
+            category_name = "science"
+
         try:
             category = Category.query.filter_by(name=category_name).first()
 
