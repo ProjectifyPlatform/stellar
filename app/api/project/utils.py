@@ -48,11 +48,13 @@ class CreateProject(Schema):
     - Objective
     - Safety
     - Content
+    - Category
     """
 
     title = fields.Str(required=True, validate=[Length(min=2, max=128)])
     difficulty = fields.Int(required=True, validate=[Range(min=0, max=5)])
     time_required = fields.Str(required=True, validate=[Length(max=20)])
+    category_id = fields.Int(required=True)
 
     # Text values.
     abstract = fields.Str(required=True, validate=[Length(max=500)])
