@@ -22,6 +22,7 @@ def load_projects_data(projects):
 
     return data
 
+
 def load_page_data(pagination_obj):
     return dict(
         # Total number of pages
